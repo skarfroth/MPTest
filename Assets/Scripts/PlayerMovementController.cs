@@ -4,32 +4,59 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovementController : NetworkBehaviour
 {
-    public float Speed = 0.1f;
-    public GameObject PlayerModel;
+    public float movementSpeed = 5.0f;
+    public GameObject playerModel;
+
+    private Rigidbody2D rb2d;
+    private Vector2 movementVector;
+
+    public SpriteRenderer PlayerSprite;
+    public Material[] PlayerColors;
 
     private void Start()
     {
-        PlayerModel.SetActive(false);
+        playerModel.SetActive(false);
+        rb2d = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
         if (SceneManager.GetActiveScene().name == "Game")
         {
-            if (PlayerModel.activeSelf == false)
+            if (playerModel.activeSelf == false)
             {
                 SetPosition();
-                PlayerModel.SetActive(true);
+                playerModel.SetActive(true);
+                PlayerCosmeticsSetup();
             }
             if (hasAuthority)
             {
-                // Movement();
+                movementVector.x = Input.GetAxis("Horizontal");
+                movementVector.y = Input.GetAxis("Vertical");
             }
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (SceneManager.GetActiveScene().name == "Game" && hasAuthority)
+        {
+            Movement();
+        }
+    }
+
+    public void Movement()
+    {
+        rb2d.velocity = Vector2.ClampMagnitude(movementVector, 1) * movementSpeed;
+    }
+
     public void SetPosition()
     {
-        transform.position = new Vector2(Random.Range(-5, 5), Random.Range(-5, 5));
+        transform.position = Vector2.zero;
+    }
+
+    public void PlayerCosmeticsSetup()
+    {
+        PlayerSprite.material = PlayerColors[GetComponent<PlayerObjectController>().PlayerColor];
     }
 }
