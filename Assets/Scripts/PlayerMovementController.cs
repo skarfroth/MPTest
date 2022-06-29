@@ -26,13 +26,14 @@ public class PlayerMovementController : NetworkBehaviour
             if (playerModel.activeSelf == false)
             {
                 SetPosition();
-                playerModel.SetActive(true);
                 PlayerCosmeticsSetup();
+                playerModel.SetActive(true);
             }
             if (hasAuthority)
             {
                 movementVector.x = Input.GetAxis("Horizontal");
                 movementVector.y = Input.GetAxis("Vertical");
+                Rotation();
             }
         }
     }
@@ -55,8 +56,16 @@ public class PlayerMovementController : NetworkBehaviour
         transform.position = Vector2.zero;
     }
 
+    public void Rotation()
+    {
+        Vector3 pos = Camera.main.WorldToScreenPoint(transform.position);
+        Vector3 dir = Input.mousePosition - pos;
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle - 90, Vector3.forward);
+    }
+
     public void PlayerCosmeticsSetup()
     {
-        PlayerSprite.material = PlayerColors[GetComponent<PlayerObjectController>().PlayerColor];
+        PlayerSprite.material = PlayerColors[CharacterCosmetics.instance.currentColorIndex];
     }
 }

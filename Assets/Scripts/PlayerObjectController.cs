@@ -55,7 +55,6 @@ public class PlayerObjectController : NetworkBehaviour
         if (hasAuthority)
         {
             CmdSetPlayerReady();
-            CmdUpdatePlayerColor(CharacterCosmetics.instance.currentColorIndex);
         }
     }
 
@@ -124,16 +123,16 @@ public class PlayerObjectController : NetworkBehaviour
     {
         if (isServer) // Host
         {
-            PlayerColor = CharacterCosmetics.instance.currentColorIndex;
+            PlayerColor = newValue;
         }
         if (isClient && (oldValue != newValue)) // Client
         {
-            UpdateColor();
+            UpdateColor(newValue);
         }
     }
 
-    void UpdateColor()
+    void UpdateColor(int message)
     {
-        PlayerColor = CharacterCosmetics.instance.currentColorIndex;
+        PlayerColor = message;
     }
 }
