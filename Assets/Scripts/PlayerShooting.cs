@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerShooting : NetworkBehaviour
 {
-    public GameObject bullet;
+    [SerializeField] private GameObject bullet;
 
     private void Update()
     {
@@ -20,6 +20,6 @@ public class PlayerShooting : NetworkBehaviour
     void Shoot()
     {
         GameObject bulletClone = Instantiate(bullet, transform.position, transform.rotation);
-        NetworkServer.Spawn(bulletClone, connectionToClient);
+        NetworkServer.Spawn(bulletClone);
     }
 }

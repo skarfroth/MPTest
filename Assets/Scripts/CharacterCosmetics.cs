@@ -28,6 +28,7 @@ public class CharacterCosmetics : MonoBehaviour
             currentColorIndex++;
             currentColorImage.color = playerColors[currentColorIndex].color;
             currentColorText.text = playerColors[currentColorIndex].name;
+            LobbyController.Instance.LocalPlayerObject.GetComponent<PlayerObjectController>().CmdUpdatePlayerColor(currentColorIndex);
         }
     }
 
@@ -38,6 +39,7 @@ public class CharacterCosmetics : MonoBehaviour
             currentColorIndex--;
             currentColorImage.color = playerColors[currentColorIndex].color;
             currentColorText.text = playerColors[currentColorIndex].name;
+            LobbyController.Instance.LocalPlayerObject.GetComponent<PlayerObjectController>().CmdUpdatePlayerColor(currentColorIndex);
         }
     }
 }
